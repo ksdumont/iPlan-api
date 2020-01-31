@@ -23,7 +23,7 @@ app.use(
 
 app.use('/api/lists', listsRouter)
 app.use('/api/trips', tripsRouter)
-// app.use('/api/members', membersRouter)
+app.use('/api/members', membersRouter)
 // app.use('/api/tasks', tasksRouter)
 
 app.get('/', (req, res) => {
