@@ -4,6 +4,10 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const {NODE_ENV, CLIENT_ORIGIN} = require('./config')
+const listsRouter = require('./lists/lists-router')
+const tripsRouter = require('./trips/trips-router')
+const membersRouter = require('./members/members-router')
+const tasksRouter = require('./tasks/tasks-router')
 
 const app = express()
 
@@ -17,12 +21,14 @@ app.use(
     })
 );
 
+app.use('/api/lists', listsRouter)
+app.use('/api/trips', tripsRouter)
+// app.use('/api/members', membersRouter)
+// app.use('/api/tasks', tasksRouter)
+
 app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
-app.get('/api/*', (req, res) => {
-    res.json({ok: true});
-});
 
 app.use(function errorHandler(error, req, res, next) {
     let response;

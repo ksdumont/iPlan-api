@@ -8,6 +8,7 @@ VALUES
 ('Get Lunch', 6, 2, 3),
 ('Get Breakfast', 7, 3, 1),
 ('Get Dessert', 8, 3, 2),
-('Get canoes', 9, 3, 3,
+('Get canoes', 9, 3, 3),
 ('Get paddles', 1, 1, 1),
 ('Get NABs', 2, 1, 2);
+
