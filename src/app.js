@@ -19,7 +19,7 @@ app.use(
     cors({
         origin: CLIENT_ORIGIN
     })
-);
+)
 
 app.use('/api/lists', listsRouter)
 app.use('/api/trips', tripsRouter)
