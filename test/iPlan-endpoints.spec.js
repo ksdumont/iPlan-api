@@ -14,14 +14,21 @@ describe("iPlan Endpoints", () => {
       });
       app.set("db", db);
     });
-    //after("disconnect from db", () => db.destroy());
-  
-    before("cleanup", () => db("iPlan-test").truncate());
-  
-    //afterEach("cleanup", () => db("iPlan-test").truncate());
 
-    describe("GET /api/lists", () => {
+    // before(knex.raw('SET foreign_key_checks = 0'))
+    // before(knex.truncate())
+    // before(knex.raw('SET foreign_key_checks = 1'))
+    // db("iPlan-test").raw('SET foreign_key_checks = 0');
+    // db.truncate(); 
+     
+  after("disconnect from db", () => db.destroy());
+  before("cleanup", () => db("iPlan-test").raw('TRUNCATE TABLE lists'));
+  afterEach("cleanup", () => db("iPlan-test").raw('TRUNCATE TABLE lists'));
+  
+
+    describe.only("GET /api/lists", () => {
         context(`Given no lists`, () => {
+          
           it(`responds with 200 and an empty list`, () => {
             return supertest(app)
               .get("/api/lists")
@@ -30,15 +37,14 @@ describe("iPlan Endpoints", () => {
         })
         context(`Given there are lists in the database`, () => {
           const testLists = fixtures.makeListsArray();
-    
+        
           beforeEach("insert lists", () => {
-            return db.into("iPlan-test").insert(testLists);
+            return db.into("lists").insert(testLists);
           });
     
           it("gets the lists", () => {
             return supertest(app)
               .get("/api/lists")
-              .orderBy("id")
               .expect(200, testLists);
           });
         });
@@ -56,7 +62,7 @@ describe("iPlan Endpoints", () => {
         const testTrips = fixtures.makeTripsArray();
   
         beforeEach("insert trips", () => {
-          return db.into("iPlan-test").insert(testTrips);
+          return db.into("trips").insert(testTrips);
         });
   
         it("gets the trips", () => {
@@ -77,8 +83,10 @@ describe("iPlan Endpoints", () => {
     context(`Given there are members in the database`, () => {
       const testMembers = fixtures.makeMembersArray();
 
+      before("cleanup", () => db("members").truncate());
+
       beforeEach("insert members", () => {
-        return db.into("iPlan-test").insert(testMembers);
+        return db.into("members").insert(testMembers);
       });
 
       it("gets the members", () => {
@@ -86,6 +94,7 @@ describe("iPlan Endpoints", () => {
           .get("/api/members")
           .expect(200, testMembers);
       });
+      after("cleanup", () => db("members").truncate());
     });
 })
 describe("GET /api/tasks", () => {
@@ -99,8 +108,10 @@ describe("GET /api/tasks", () => {
   context(`Given there are tasks in the database`, () => {
     const testTasks = fixtures.makeTasksArray();
 
+    before("cleanup", () => db("tasks").truncate());
+
     beforeEach("insert tasks", () => {
-      return db.into("iPlan-test").insert(testTasks);
+      return db.into("tasks").insert(testTasks);
     });
 
     it("gets the tasks", () => {
@@ -108,6 +119,7 @@ describe("GET /api/tasks", () => {
         .get("/api/tasks")
         .expect(200, testTasks);
     });
+    after("cleanup", () => db("tasks").truncate());
   });
 })
 })
