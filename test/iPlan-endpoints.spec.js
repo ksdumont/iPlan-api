@@ -24,6 +24,7 @@ describe("iPlan Endpoints", () => {
   after("disconnect from db", () => db.destroy());
   before("cleanup", () => db("iPlan-test").raw('TRUNCATE TABLE lists'));
   afterEach("cleanup", () => db("iPlan-test").raw('TRUNCATE TABLE lists'));
+
   
 
     describe.only("GET /api/lists", () => {
@@ -83,8 +84,6 @@ describe("iPlan Endpoints", () => {
     context(`Given there are members in the database`, () => {
       const testMembers = fixtures.makeMembersArray();
 
-      before("cleanup", () => db("members").truncate());
-
       beforeEach("insert members", () => {
         return db.into("members").insert(testMembers);
       });
@@ -94,7 +93,6 @@ describe("iPlan Endpoints", () => {
           .get("/api/members")
           .expect(200, testMembers);
       });
-      after("cleanup", () => db("members").truncate());
     });
 })
 describe("GET /api/tasks", () => {
@@ -108,8 +106,6 @@ describe("GET /api/tasks", () => {
   context(`Given there are tasks in the database`, () => {
     const testTasks = fixtures.makeTasksArray();
 
-    before("cleanup", () => db("tasks").truncate());
-
     beforeEach("insert tasks", () => {
       return db.into("tasks").insert(testTasks);
     });
@@ -119,7 +115,6 @@ describe("GET /api/tasks", () => {
         .get("/api/tasks")
         .expect(200, testTasks);
     });
-    after("cleanup", () => db("tasks").truncate());
   });
 })
 })
