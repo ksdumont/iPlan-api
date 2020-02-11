@@ -337,10 +337,10 @@ describe("iPlan Endpoints", () => {
         const expectedTasks = testTasks.filter(t => t.id !== idToRemove);
         return supertest(app)
           .delete(`/api/tasks/${idToRemove}`)
-          .expect(204)
+          .expect(204).end()
           .then(() =>
-            supertest(app)
-              .get(`api/tasks`)
+              supertest(app)
+              .get(`/api/tasks`)
               .expect(expectedTasks)
           )
       });
